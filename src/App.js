@@ -1,7 +1,9 @@
 import React from 'react';
+import { nanoid } from 'nanoid';
 import './App.css';
 import Splash from './components/Splash';
 import Quiz from './components/Quiz';
+
 
 function App() {
 
@@ -14,7 +16,6 @@ function App() {
           .then(response => response.json())
           .then((data) => {
             setQuizData(data.results);
-            console.log(quizData)
           });
           
   }
@@ -23,15 +24,17 @@ function App() {
       fetchQuiz()
   },[])
 
-  function mapQuiz(){
       const quizElements = quizData.map(quiz => {
           return(
-              <Quiz 
+              <Quiz
+                key={nanoid()}
                 question={quiz.question}
               />
           )
       })
-  }
+
+      console.log(quizElements)
+  
 
 
   function startHandler(){
@@ -40,7 +43,7 @@ function App() {
 
   return (
     <div className="App">
-        {splash ? <Splash onClick={startHandler}/> : <Quiz />}
+        {splash ? <Splash onClick={startHandler}/> : quizElements}
     </div>
   );
 }
