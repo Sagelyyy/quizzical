@@ -1,23 +1,46 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Splash from './components/Splash';
+import Quiz from './components/Quiz';
 
 function App() {
+
+  const [splash, setSplash] = React.useState(true)
+  const [quizData, setQuizData] = React.useState([])
+
+  function fetchQuiz(){
+      const url = `https://opentdb.com/api.php?amount=5`
+      fetch(url)
+          .then(response => response.json())
+          .then((data) => {
+            setQuizData(data.results);
+            console.log(quizData)
+          });
+          
+  }
+
+  React.useEffect(() => {
+      fetchQuiz()
+  },[])
+
+  function mapQuiz(){
+      const quizElements = quizData.map(quiz => {
+          return(
+              <Quiz 
+                question={quiz.question}
+              />
+          )
+      })
+  }
+
+
+  function startHandler(){
+    setSplash(old => !old)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        {splash ? <Splash onClick={startHandler}/> : <Quiz />}
     </div>
   );
 }
