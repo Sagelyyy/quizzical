@@ -17,23 +17,31 @@ function App() {
           .then((data) => {
             setQuizData(data.results);
           });
-          
+  }
+
+  function decodeHTML(text){
+    //inject html into the textarea, and return the decoded value
+    let data = document.createElement('textarea')
+    data.innerHTML = text
+    return data.value
   }
 
   React.useEffect(() => {
       fetchQuiz()
   },[])
 
+
       const quizElements = quizData.map(quiz => {
           return(
               <Quiz
                 key={nanoid()}
-                question={quiz.question}
+                question={decodeHTML(quiz.question)}
+                answer={decodeHTML(quiz.correct_answer)}
               />
           )
       })
 
-      console.log(quizElements)
+      console.log(quizData)
   
 
 
