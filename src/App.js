@@ -37,6 +37,9 @@ function App() {
                 key={nanoid()}
                 question={decodeHTML(quiz.question)}
                 answer={decodeHTML(quiz.correct_answer)}
+                wrong={decodeHTML(quiz.incorrect_answers[0])}
+                wrong1={decodeHTML(quiz.incorrect_answers[1])}
+                wrong2={decodeHTML(quiz.incorrect_answers[2])}
               />
           )
       })
