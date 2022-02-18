@@ -1,13 +1,12 @@
 import React from "react";
-import { nanoid } from "nanoid";
 
 export default function Quiz(props) {
 
-    const answerArray = [props.answer, props.wrong, props.wrong1, props.wrong2]
-
+    const answerArray = [props.wrong, props.wrong1, props.wrong2, props.answer]
+    // const shuffledArray = answerArray.sort((a, b) => 0.5 - Math.random())
     const quizElements = answerArray.map(ans => {
-        return(
-            ans !== null && <button className="quiz--answer">{ans}</button>
+        return (
+            ans !== null && <button onClick={props.onClick} className="quiz--answer">{ans}</button>
         )
     })
 
@@ -18,6 +17,7 @@ export default function Quiz(props) {
                 {quizElements}
             </div>
             <hr></hr>
+
         </div>
     )
 }

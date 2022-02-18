@@ -9,53 +9,90 @@ function App() {
 
   const [splash, setSplash] = React.useState(true)
   const [quizData, setQuizData] = React.useState([])
+  const [answers, setAnswers] = React.useState('')
+  const [wrongAnswers, setWrongAnswers] = React.useState('')
+  const [userAnswers, setUserAnswers] = React.useState({
+    question0: false,
+    question1: false,
+    question2: false,
+    question3: false,
+    question4: false,
+  })
 
-  function fetchQuiz(){
-      const url = `https://opentdb.com/api.php?amount=5`
-      fetch(url)
-          .then(response => response.json())
-          .then((data) => {
-            setQuizData(data.results);
-          });
+  function fetchQuiz() {
+    const url = `https://opentdb.com/api.php?amount=5`
+    fetch(url)
+      .then(response => response.json())
+      .then((data) => {
+        setQuizData(data.results);
+        const correct = data.results.map(ans => ans.correct_answer)
+        setAnswers(correct)
+        const incorrect = data.results.map(inc => inc.incorrect_answers)
+        console.log('incorrect!')
+        console.log(incorrect)
+        setWrongAnswers(shuffleAnswers(incorrect))
+      });
   }
 
-  function decodeHTML(text){
+  function decodeHTML(text) {
     //inject html into the textarea, and return the decoded value
     let data = document.createElement('textarea')
     data.innerHTML = text
     return data.value
   }
 
+  function clickHandler(event) {
+    const { textContent } = event.target
+    for (let i = 0; i < answers.length; i += 1) {
+      if (textContent === decodeHTML(answers[i])) {
+        setUserAnswers(() => {
+          return{
+            test: 'test'
+          }
+        })
+      }
+    }
+  }
+
   React.useEffect(() => {
-      fetchQuiz()
-  },[])
+    fetchQuiz()
+  }, [])
 
 
-      const quizElements = quizData.map(quiz => {
-          return(
-              <Quiz
-                key={nanoid()}
-                question={decodeHTML(quiz.question)}
-                answer={decodeHTML(quiz.correct_answer)}
-                wrong={decodeHTML(quiz.incorrect_answers[0])}
-                wrong1={quiz.incorrect_answers[1] != undefined ? decodeHTML(quiz.incorrect_answers[1]) : null}
-                wrong2={quiz.incorrect_answers[2] != undefined ? decodeHTML(quiz.incorrect_answers[2]) : null}
-              />
-          )
-      })
+  function shuffleAnswers(arr){
+    //not working at all
+    let shuffled
+    for(let i=0;i< arr.length;i +=1){
+     shuffled = arr[i].sort((a, b) => 0.5 - Math.random())
+    }
+    return shuffled
+  }
 
-      console.log(quizData)
-  
+  console.log(quizData)
+  console.log(wrongAnswers)
 
+  const quizElements = quizData.map(quiz => {
+    return (
+      <Quiz
+        onClick={clickHandler}
+        key={nanoid()}
+        question={decodeHTML(quiz.question)}
+        answer={decodeHTML(quiz.correct_answer)}
+        wrong={decodeHTML(quiz.incorrect_answers[0])}
+        wrong1={quiz.incorrect_answers[1] !== undefined ? decodeHTML(quiz.incorrect_answers[1]) : null}
+        wrong2={quiz.incorrect_answers[2] !== undefined ? decodeHTML(quiz.incorrect_answers[2]) : null}
+      />
+    )
+  })
 
-  function startHandler(){
+  function startHandler() {
     setSplash(old => !old)
   }
 
   return (
     <div className="App">
-        {splash ? <Splash onClick={startHandler}/> : quizElements}
-        
+      {splash ? <Splash onClick={startHandler} /> : quizElements}
+      {splash ? '' : <button className='app--grade'> Check answers</button>}
     </div>
   );
 }
