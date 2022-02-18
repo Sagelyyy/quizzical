@@ -27,11 +27,8 @@ function App() {
         setQuizData(data.results);
         const correct = data.results.map(ans => ans.correct_answer)
         setAnswers(correct)
-        const incorrect = data.results.map(inc => inc.incorrect_answers)
-        console.log('incorrect!')
-        console.log(incorrect)
-        setWrongAnswers(shuffleAnswers(incorrect))
       });
+     
   }
 
   function decodeHTML(text) {
@@ -58,18 +55,8 @@ function App() {
     fetchQuiz()
   }, [])
 
-
-  function shuffleAnswers(arr){
-    //not working at all
-    let shuffled
-    for(let i=0;i< arr.length;i +=1){
-     shuffled = arr[i].sort((a, b) => 0.5 - Math.random())
-    }
-    return shuffled
-  }
-
   console.log(quizData)
-  console.log(wrongAnswers)
+  console.log(answers)
 
   const quizElements = quizData.map(quiz => {
     return (
