@@ -32,3 +32,44 @@
   cursor: pointer;
   margin-top: 29px;
 }
+
+.quiz--container{
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 70%;
+  display: flex;
+  flex-flow: column;
+}
+
+.quiz--question{
+  align-self: flex-start;
+  color: #293264;
+  font-family: Karla;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 19px;
+  margin-bottom: 20px;
+}
+
+.quiz--answer--container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 90%;
+}
+
+.quiz--answer{
+  width: fit-content;
+  height: 30px;
+  border-radius: 10px;
+  background-color: transparent;
+  border-color: 4px solid #293264;
+}
+
+hr{
+  margin-top: 10px;
+  width: 90%;
+  border-top: 1px solid #4D5B9E;
+}
