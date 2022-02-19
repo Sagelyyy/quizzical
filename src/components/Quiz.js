@@ -1,10 +1,11 @@
 import React from "react";
+import { nanoid } from "nanoid";
 
 export default function Quiz(props) {
 
     const quizElements = props.answers.map(ans => {
         return (
-             ans !== null && <button onClick={props.onClick} className="quiz--answer">{ans}</button>
+             ans !== null && <button key={nanoid()} value={ans} onClick={props.onClick} className="quiz--answer">{ans}</button>
         )
     })
 

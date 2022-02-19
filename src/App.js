@@ -19,7 +19,7 @@ function App() {
           question: item.question,
           correct_answer: item.correct_answer,
           incorrect_answers: item.incorrect_answers,
-          allAnswers: shuffle([...item.incorrect_answers, item.correct_answer]),
+          allAnswers: shuffle([decodeHTML(...item.incorrect_answers), decodeHTML(item.correct_answer)]),
           userAnswer: '',
           id: nanoid()
         })));
@@ -35,20 +35,14 @@ function App() {
   }
 
   function clickHandler(event) {
-    const { textContent } = event.target
-    console.log(textContent)
+    //work on this
+    const { value } = event.target
+    console.log(quizData)
   }
 
   React.useEffect(() => {
     fetchQuiz()
-    
-   
   }, [])
-
-function shuffleAnswers(arr) {
-  const shuffled = arr.sort((a,b) => Math.random() - 0.5)
-  return shuffled
-}
 
 function shuffle(oldAnswers) {
   let array = oldAnswers
