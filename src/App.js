@@ -9,24 +9,20 @@ function App() {
 
   const [splash, setSplash] = React.useState(true)
   const [quizData, setQuizData] = React.useState([])
-  const [answers, setAnswers] = React.useState('')
-  const [wrongAnswers, setWrongAnswers] = React.useState('')
-  const [userAnswers, setUserAnswers] = React.useState({
-    question0: false,
-    question1: false,
-    question2: false,
-    question3: false,
-    question4: false,
-  })
 
   function fetchQuiz() {
     const url = `https://opentdb.com/api.php?amount=5`
     fetch(url)
       .then(response => response.json())
       .then((data) => {
-        setQuizData(data.results);
-        const correct = data.results.map(ans => ans.correct_answer)
-        setAnswers(correct)
+        setQuizData(data.results.map(item => ({
+          question: item.question,
+          correct_answer: item.correct_answer,
+          incorrect_answers: item.incorrect_answers,
+          allAnswers: shuffle([...item.incorrect_answers, item.correct_answer]),
+          userAnswer: '',
+          id: nanoid()
+        })));
       });
      
   }
@@ -40,34 +36,45 @@ function App() {
 
   function clickHandler(event) {
     const { textContent } = event.target
-    for (let i = 0; i < answers.length; i += 1) {
-      if (textContent === decodeHTML(answers[i])) {
-        setUserAnswers(() => {
-          return{
-            test: 'test'
-          }
-        })
-      }
-    }
+    console.log(textContent)
   }
 
   React.useEffect(() => {
     fetchQuiz()
+    
+   
   }, [])
 
+function shuffleAnswers(arr) {
+  const shuffled = arr.sort((a,b) => Math.random() - 0.5)
+  return shuffled
+}
+
+function shuffle(oldAnswers) {
+  let array = oldAnswers
+  let currentIndex = array.length,  randomIndex;
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}  
+
   console.log(quizData)
-  console.log(answers)
+  // console.log(answers)
 
   const quizElements = quizData.map(quiz => {
     return (
       <Quiz
         onClick={clickHandler}
-        key={nanoid()}
+        key={quiz.id}
         question={decodeHTML(quiz.question)}
-        answer={decodeHTML(quiz.correct_answer)}
-        wrong={decodeHTML(quiz.incorrect_answers[0])}
-        wrong1={quiz.incorrect_answers[1] !== undefined ? decodeHTML(quiz.incorrect_answers[1]) : null}
-        wrong2={quiz.incorrect_answers[2] !== undefined ? decodeHTML(quiz.incorrect_answers[2]) : null}
+        answers={quiz.allAnswers}
       />
     )
   })
