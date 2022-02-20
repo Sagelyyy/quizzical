@@ -19,8 +19,9 @@ function App() {
           question: item.question,
           correct_answer: item.correct_answer,
           incorrect_answers: item.incorrect_answers,
-          allAnswers: shuffle([decodeHTML(...item.incorrect_answers), decodeHTML(item.correct_answer)]),
+          allAnswers: shuffle([...item.incorrect_answers, item.correct_answer]),
           userAnswer: '',
+          selected: false,
           id: nanoid()
         })));
       });
@@ -34,10 +35,14 @@ function App() {
     return data.value
   }
 
-  function clickHandler(event) {
-    //work on this
-    const { value } = event.target
-    console.log(quizData)
+  function clickHandler(event, id) {
+    const { value, style } = event.target
+    setQuizData(
+      quizData.map(item => 
+          item.id === id 
+          ? {...item, userAnswer : value, selected: !item.selected} 
+          : item 
+  ))
   }
 
   React.useEffect(() => {
@@ -56,19 +61,22 @@ function shuffle(oldAnswers) {
       [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
   }
-  return array;
+  const decoded = array.map(arr => decodeHTML(arr))
+  return decoded;
 }  
 
   console.log(quizData)
-  // console.log(answers)
+
 
   const quizElements = quizData.map(quiz => {
     return (
       <Quiz
         onClick={clickHandler}
         key={quiz.id}
+        id={quiz.id}
         question={decodeHTML(quiz.question)}
         answers={quiz.allAnswers}
+        selected={quiz.selected}
       />
     )
   })
@@ -77,10 +85,14 @@ function shuffle(oldAnswers) {
     setSplash(old => !old)
   }
 
+  function checkAnswers(){
+    console.log('Grade logic')
+  }
+
   return (
     <div className="App">
       {splash ? <Splash onClick={startHandler} /> : quizElements}
-      {splash ? '' : <button className='app--grade'> Check answers</button>}
+      {splash ? '' : <button onClick={checkAnswers} className='app--grade'> Check answers</button>}
     </div>
   );
 }
