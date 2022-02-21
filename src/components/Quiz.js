@@ -4,13 +4,14 @@ import { nanoid } from "nanoid";
 export default function Quiz(props) {
 
     const styles = {
-        backgroundColor: 'red'
+        backgroundColor: '#D6DBF5'
     }
 
     const quizElements = props.answers.map(ans => {
         return (
-            ans !== null && 
-            <button key={nanoid()} value={ans} onClick={(event) => props.onClick(event, props.id)} className="quiz--answer">{ans}</button>
+            ans !== null && ans === props.userAnswer ?
+                <button key={nanoid()} style={styles} value={ans} onClick={(event) => props.onClick(event, props.id)} className="quiz--answer">{ans}</button> :
+                <button key={nanoid()} style={null} value={ans} onClick={(event) => props.onClick(event, props.id)} className="quiz--answer">{ans}</button>
         )
     })
 

@@ -84,7 +84,7 @@
   width: 100%;
 }
 
-.app--grade{
+.app--grade, .app--newQuiz{
   width: 193px;
   height: 52px;
   background: #4D5B9E;
@@ -98,7 +98,7 @@
   margin-left: 40%;
 }
 
-.app--grade:hover{
+.app--grade:hover, .app--newQuiz:hover{
   background-color: #D6DBF5;
   color: #293264;
   border: 2px solid #293264;
@@ -108,4 +108,17 @@ hr{
   margin-top: 10px;
   width: 100%;
   border-top: 1px solid #4D5B9E;
+}
+
+.grade--container{
+  margin: 0 auto;
+}
+
+.grade--text{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 17px;
+  margin-left: 38%;
+  color: #293264;
 }
