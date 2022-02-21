@@ -96,18 +96,18 @@ function App() {
   }
 
   function newGame() {
-    setGameState(0)
+    setGameState(1)
     setGrade(0)
     fetchQuiz()
   }
 
   return (
     <div className="App">
-      {grade === 5 ? <Confetti /> : null}
+      {grade === 5 && <Confetti />}
       {gameState === 0 ? <Splash onClick={startHandler} /> : quizElements}
-      {gameState === 2 ? <Grade grade={grade} /> : null}
-      {gameState === 1 ? <button onClick={checkAnswers} className='app--grade'>Check answers</button> : null}
-      {gameState === 2 ? <button onClick={newGame} className='app--newQuiz'>New Quiz?</button> : null}
+      {gameState === 2 && <Grade grade={grade} />}
+      {gameState === 1 && <button onClick={checkAnswers} className='app--grade'>Check answers</button>}
+      {gameState === 2 && <button onClick={newGame} className='app--newQuiz'>New Quiz?</button>}
     </div>
   );
 }
