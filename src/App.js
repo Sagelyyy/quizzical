@@ -76,8 +76,11 @@ function App() {
         id={quiz.id}
         question={decodeHTML(quiz.question)}
         answers={quiz.allAnswers}
+        correct={quiz.correct_answer}
+        wrong={quiz.incorrect_answers}
         selected={quiz.selected}
         userAnswer={quiz.userAnswer}
+        state={gameState}
       />
     )
   })
